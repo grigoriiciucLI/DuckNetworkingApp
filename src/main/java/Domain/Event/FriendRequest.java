@@ -19,7 +19,15 @@ public class FriendRequest extends Event{
         this.requestTo = requestTo;
     }
 
-    public synchronized void setStatus(Status status) {
-        this.status = status;
+    public User getRequestFrom() {
+        return requestFrom;
+    }
+
+    public User getRequestTo() {
+        return requestTo;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 }

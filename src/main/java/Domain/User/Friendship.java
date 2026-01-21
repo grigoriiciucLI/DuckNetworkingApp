@@ -11,4 +11,12 @@ public class Friendship extends Entity<Integer> {
         this.u1 = u1;
         this.u2 = u2;
     }
+
+    public User getU1() {
+        return u1;
+    }
+
+    public User getU2() {
+        return u2;
+    }
 }
