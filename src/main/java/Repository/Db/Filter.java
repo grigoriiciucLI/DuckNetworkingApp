@@ -1,4 +1,4 @@
-package Repository;
+package Repository.Db;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,4 +29,9 @@ public class Filter {
             stmt.setObject(i++, value);
         }
     }
+
+    public int size() {
+        return filters.size();
+    }
+
 }

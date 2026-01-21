@@ -2,5 +2,5 @@ package Service;
 
 import Domain.Entity;
 
-public class IService<ID,E extends Entity <ID>>{
+public interface IService<ID,E extends Entity <ID>>{
 }

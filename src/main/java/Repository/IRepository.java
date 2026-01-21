@@ -1,6 +1,7 @@
 package Repository;
 
 import Domain.Entity;
+import Repository.Db.Filter;
 
 import java.util.List;
 import java.util.Optional;

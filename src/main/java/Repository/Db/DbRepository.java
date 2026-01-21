@@ -1,6 +1,5 @@
 package Repository.Db;
 import Domain.Entity;
-import Repository.Filter;
 import Repository.IRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
