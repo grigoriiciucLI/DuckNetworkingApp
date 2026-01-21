@@ -1,4 +1,4 @@
-package Domain;
+package Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

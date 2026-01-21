@@ -7,14 +7,24 @@ public class Person extends User{
     private String name;
     private String surname;
     private LocalDate birthdate;
-    private double emphatyLevel;
 
-    public Person(Long id, String username, String email, String passwd, String name, String surname, LocalDate birthdate, double emphatyLevel) {
+    public Person(Long id, String username, String email, String passwd, String name, String surname, LocalDate birthdate) {
         super(id, username, email, passwd);
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
-        this.emphatyLevel = emphatyLevel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
     @Override
@@ -23,11 +33,11 @@ public class Person extends User{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Person person = (Person) o;
-        return Double.compare(emphatyLevel, person.emphatyLevel) == 0 && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(birthdate, person.birthdate);
+        return Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(birthdate, person.birthdate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, surname, birthdate, emphatyLevel);
+        return Objects.hash(super.hashCode(), name, surname, birthdate);
     }
 }

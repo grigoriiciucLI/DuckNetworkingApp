@@ -1,6 +1,6 @@
 package Repository.Db;
 import Domain.Entity;
-import Domain.Filter;
+import Repository.Filter;
 import Repository.IRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,8 +91,20 @@ public abstract class DbRepository<ID,E extends Entity<ID>> implements IReposito
             throw new RuntimeException(ex);
         }
     }
+    @Override
+    public void add(E e) {
+        String sql = buildInsertSql();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            setInsertParameters(ps, e);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    protected abstract String buildInsertSql();
+    protected abstract void setInsertParameters(PreparedStatement ps, E e) throws SQLException;
     protected abstract String buildUpdateSql();
     protected abstract void setUpdateParameters(PreparedStatement preparedStatement, E e) throws SQLException;
     public abstract String getTableName();
-    protected abstract E mapResultSetToEntity(ResultSet resultSet);
+    protected abstract E mapResultSetToEntity(ResultSet resultSet) throws SQLException;
 }

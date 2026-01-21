@@ -16,6 +16,18 @@ public abstract class User extends Entity<Long> {
         this.passwd = passwd;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
