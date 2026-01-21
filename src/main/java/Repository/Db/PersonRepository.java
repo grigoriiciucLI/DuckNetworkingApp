@@ -11,9 +11,9 @@ public class PersonRepository extends DbRepository<Long, Person >{
 
     @Override
     protected String buildInsertSql() {
-        return "INSERT INTO persons " +
+        return "INSERT INTO users " +
                 "(id, username, email, password, name, surname, birthdate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PersonRepository extends DbRepository<Long, Person >{
 
     @Override
     protected String buildUpdateSql() {
-        return "UPDATE persons SET username = ?, email = ?, password = ?, name = ?, surname = ?, birthdate = ?, empathy_level = ? WHERE id = ?";
+        return "UPDATE users SET username = ?, email = ?, password = ?, name = ?, surname = ?, birthdate = ? WHERE id = ?";
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PersonRepository extends DbRepository<Long, Person >{
 
     @Override
     public String getTableName() {
-        return "persons";
+        return "users";
     }
 
     @Override
