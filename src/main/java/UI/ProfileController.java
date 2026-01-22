@@ -1,11 +1,14 @@
 package UI;
 
+import Domain.Event.FriendshipEvent;
 import Domain.User.Person;
 import Domain.User.Friendship;
+import Observer.IObserver;
 import Repository.Db.FriendshipRepository;
 import Service.AuthService;
 import Service.FriendshipService;
 import Service.PersonService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ProfileController {
+public class ProfileController implements IObserver<FriendshipEvent> {
 
     private AuthService authService;
     private FriendshipService friendshipService;
@@ -39,6 +42,7 @@ public class ProfileController {
         this.stage = stage;
         this.personService = authService.getPersonService();
         this.friendshipService = authService.getFriendshipService();
+        friendshipService.addObserver(this);
     }
     public void setProfilePerson(Person person) {
         this.profilePerson = person;
@@ -48,14 +52,17 @@ public class ProfileController {
         Person currentUser = authService.getCurrentPerson();
         nameLabel.setText(profilePerson.getName() + " " + profilePerson.getSurname());
         usernameLabel.setText(profilePerson.getUsername());
-        friendsCountLabel.setText("Friends: " + friendshipService.countFriends(currentUser));
         updateFriendshipButtons(currentUser);
+        updateFriendsCount();
     }
 
     private void updateFriendshipButtons(Person currentUser) {
         boolean isFriend = friendshipService.exists(currentUser, profilePerson);
         addButton.setVisible(!isFriend && !currentUser.equals(profilePerson));
         removeButton.setVisible(isFriend);
+    }
+    private void updateFriendsCount(){
+        friendsCountLabel.setText("Friends: " + friendshipService.countFriends(profilePerson));
     }
     @FXML
     private void handleAdd() {
@@ -71,15 +78,33 @@ public class ProfileController {
     }
     @FXML
     private void handleBack(){
+        dispose();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UsersView.fxml"));
             Parent root = loader.load();
-            ProfileController controller = loader.getController();
+            UsersController controller = loader.getController();
             controller.setServices(authService, stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Users");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void update(FriendshipEvent event) {
+        Platform.runLater(() -> {
+            Person currentUser = authService.getCurrentPerson();
+            if (event.getFriendship().getU1().equals(profilePerson) ||
+                    event.getFriendship().getU2().equals(profilePerson) ||
+                    event.getFriendship().getU1().equals(currentUser) ||
+                    event.getFriendship().getU2().equals(currentUser)) {
+                updateFriendshipButtons(currentUser);
+                updateFriendsCount();
+            }
+        });
+    }
+    public void dispose() {
+        friendshipService.removeObserver(this);
     }
 }

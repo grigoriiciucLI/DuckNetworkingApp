@@ -1,13 +1,21 @@
 package Service;
 
+import Domain.Event.FriendshipEvent;
 import Domain.User.Friendship;
 import Domain.User.Person;
 import Domain.User.User;
+import Observer.IObservable;
+import Observer.IObserver;
 import Repository.Db.Filter;
 import Repository.IRepository;
 
-public class FriendshipService extends EntityService<Integer, Friendship>{
+import java.util.ArrayList;
+import java.util.List;
+
+public class FriendshipService extends EntityService<Integer, Friendship>
+implements IObservable<FriendshipEvent> {
     private final PersonService personService;
+    private final List<IObserver<FriendshipEvent>> observers = new ArrayList<>();
     public FriendshipService(IRepository<Integer, Friendship> repo, PersonService personService) {
         super(repo);
         this.personService = personService;
@@ -16,6 +24,7 @@ public class FriendshipService extends EntityService<Integer, Friendship>{
     public void add(User u1, User u2){
         Friendship friendship = new Friendship(u1,u2);
         super.add(friendship);
+        notifyObservers(new FriendshipEvent(FriendshipEvent.Type.ADDED,friendship));
     }
 
     public void remove(User u1, User u2) {
@@ -27,10 +36,12 @@ public class FriendshipService extends EntityService<Integer, Friendship>{
         f2.addFilter("user2_id", u1.getId());
         getRepo().filter(f1).stream()
                 .findFirst()
-                .ifPresent(f -> super.remove(f.getId()));
+                .ifPresent(f -> {super.remove(f.getId());
+                    notifyObservers(new FriendshipEvent(FriendshipEvent.Type.REMOVED, f));});
         getRepo().filter(f2).stream()
                 .findFirst()
-                .ifPresent(f -> super.remove(f.getId()));
+                .ifPresent(f -> {super.remove(f.getId());
+                    notifyObservers(new FriendshipEvent(FriendshipEvent.Type.REMOVED, f));});
     }
 
     public boolean exists(Person u1, Person u2) {
@@ -56,5 +67,16 @@ public class FriendshipService extends EntityService<Integer, Friendship>{
         return count1 + count2;
     }
 
-
+    @Override
+    public void addObserver(IObserver<FriendshipEvent> o) {
+        observers.add(o);
+    }
+    @Override
+    public void removeObserver(IObserver<FriendshipEvent> o) {
+        observers.remove(o);
+    }
+    @Override
+    public void notifyObservers(FriendshipEvent e) {
+        observers.forEach(o -> o.update(e));
+    }
 }

@@ -33,3 +33,5 @@ CREATE TABLE notifications (
                                seen_on TIMESTAMP NULL DEFAULT NULL,
                                CONSTRAINT fk_receiver FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+select * from friendships

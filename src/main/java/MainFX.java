@@ -10,30 +10,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 public class MainFX extends Application {
-    private AuthService authService;
+    private PersonService sharedPersonService;
+    private FriendshipService sharedFriendshipService;
     @Override
     public void start(Stage primaryStage) {
-        AuthService authService = createAuthService();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
-            Parent root = loader.load();
-            LoginController controller = loader.getController();
-            controller.setServices(authService, primaryStage);
-            primaryStage.setTitle("Login");
-            primaryStage.setScene(new Scene(root));
-            primaryStage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        initializeSharedServices();
+        openLoginWindow();
+        openLoginWindow();
     }
-    private AuthService createAuthService() {
+    private void initializeSharedServices() {
         try {
             Properties props = Config.getProperties();
             Connection connection = DriverManager.getConnection(
@@ -42,16 +33,28 @@ public class MainFX extends Application {
                     props.getProperty("db.password")
             );
             PersonRepository personRepository = new PersonRepository(connection);
-            FriendshipRepository friendshipRepository = new FriendshipRepository(connection,personRepository);
-            PersonService personService = new PersonService(personRepository);
-            FriendshipService friendshipService = new FriendshipService(friendshipRepository,personService);
-            return new AuthService(personService,friendshipService);
+            FriendshipRepository friendshipRepository = new FriendshipRepository(connection, personRepository);
+            sharedPersonService = new PersonService(personRepository);
+            sharedFriendshipService = new FriendshipService(friendshipRepository, sharedPersonService);
         } catch (SQLException e) {
             throw new RuntimeException("Database connection failed", e);
         }
     }
-
-
+    public void openLoginWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
+            Parent root = loader.load();
+            Stage loginStage = new Stage();
+            AuthService windowAuth = new AuthService(sharedPersonService, sharedFriendshipService);
+            LoginController controller = loader.getController();
+            controller.setServices(windowAuth, loginStage);
+            loginStage.setScene(new Scene(root));
+            loginStage.setTitle("Login");
+            loginStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static void main(String[] args) {
         launch(args);
     }
