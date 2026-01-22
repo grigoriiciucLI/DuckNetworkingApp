@@ -3,6 +3,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <VBox spacing="10" alignment="TOP_CENTER"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -16,5 +18,8 @@
             <TableColumn fx:id="emailColumn" text="Email"/>
         </columns>
     </TableView>
+    <Label text="Notifications:"/>
+    <ListView fx:id="notificationListView" prefHeight="150"/>
+    <Button text="Mark All As Seen" onAction="#markAllAsRead"/>
     <Button text="Log out" onAction="#handleLogout" />
 </VBox>

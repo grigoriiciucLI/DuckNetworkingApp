@@ -1,4 +1,6 @@
 package UI;
+import Domain.Event.Notification;
+import Observer.IObserver;
 import Service.AuthService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +44,7 @@ public class LoginController {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 

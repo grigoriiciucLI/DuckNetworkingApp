@@ -1,12 +1,14 @@
 package UI;
 
 import Domain.Event.FriendshipEvent;
+import Domain.Event.Notification;
 import Domain.User.Person;
 import Domain.User.Friendship;
 import Observer.IObserver;
 import Repository.Db.FriendshipRepository;
 import Service.AuthService;
 import Service.FriendshipService;
+import Service.NotificationService;
 import Service.PersonService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -20,8 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ProfileController implements IObserver<FriendshipEvent> {
-
+public class ProfileController implements IObserver<FriendshipEvent>{
     private AuthService authService;
     private FriendshipService friendshipService;
     private PersonService personService;
@@ -93,16 +94,14 @@ public class ProfileController implements IObserver<FriendshipEvent> {
 
     @Override
     public void update(FriendshipEvent event) {
-        Platform.runLater(() -> {
-            Person currentUser = authService.getCurrentPerson();
-            if (event.getFriendship().getU1().equals(profilePerson) ||
-                    event.getFriendship().getU2().equals(profilePerson) ||
-                    event.getFriendship().getU1().equals(currentUser) ||
-                    event.getFriendship().getU2().equals(currentUser)) {
-                updateFriendshipButtons(currentUser);
-                updateFriendsCount();
-            }
-        });
+        Person currentUser = authService.getCurrentPerson();
+        if (event.getFriendship().getU1().equals(profilePerson) ||
+                event.getFriendship().getU2().equals(profilePerson) ||
+                event.getFriendship().getU1().equals(currentUser) ||
+                event.getFriendship().getU2().equals(currentUser)) {
+            updateFriendshipButtons(currentUser);
+            updateFriendsCount();
+        }
     }
     public void dispose() {
         friendshipService.removeObserver(this);

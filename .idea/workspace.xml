@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0a408252-c4c5-4e38-8a39-ef10ef01c2df" name="Changes" comment="profile window done">
+    <list default="true" id="0a408252-c4c5-4e38-8a39-ef10ef01c2df" name="Changes" comment="added observer pattern for adding/removing friends">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Service/AsyncExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Service/NotificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Domain/Event/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Domain/Event/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MainFX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainFX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Service/FriendshipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Service/FriendshipService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UI/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UI/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/ProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UI/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/UsersController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/ProfileView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/ProfileView.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/UsersView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/UsersView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +44,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -88,6 +94,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\hp\Desktop\JavaFX\DuckNetworkingApp\src\main\resources\fxml" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Service" />
+    </key>
   </component>
   <component name="RunManager" selected="Gradle.DuckNetworkingApp [build]">
     <configuration name="MainFX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -96,6 +105,11 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="init_db.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/src/main/resources/init_db.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
     </configuration>
     <configuration name="DuckNetworkingApp [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -122,6 +136,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.DuckNetworkingApp [build]" />
+        <item itemvalue="Database Script.init_db.sql" />
         <item itemvalue="Application.MainFX" />
       </list>
     </recent_temporary>
@@ -139,7 +154,7 @@
       <workItem from="1767726047836" duration="595000" />
       <workItem from="1768376576425" duration="31000" />
       <workItem from="1769006181892" duration="18180000" />
-      <workItem from="1769069275849" duration="3470000" />
+      <workItem from="1769069275849" duration="14791000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -221,7 +236,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769071616671</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="implemented logout functionality">
+      <option name="closed" value="true" />
+      <created>1769072785431</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1769072785431</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added observer pattern for adding/removing friends">
+      <option name="closed" value="true" />
+      <created>1769075749526</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769075749526</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,7 +279,9 @@
     <MESSAGE value="progressing..." />
     <MESSAGE value="service layer + initialize database query" />
     <MESSAGE value="profile window done" />
-    <option name="LAST_COMMIT_MESSAGE" value="profile window done" />
+    <MESSAGE value="implemented logout functionality" />
+    <MESSAGE value="added observer pattern for adding/removing friends" />
+    <option name="LAST_COMMIT_MESSAGE" value="added observer pattern for adding/removing friends" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DuckNetworkingApp$DuckNetworkingApp__build_.ic" NAME="DuckNetworkingApp [build] Coverage Results" MODIFIED="1769030185860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

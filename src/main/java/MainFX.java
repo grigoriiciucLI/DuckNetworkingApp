@@ -1,7 +1,9 @@
 import Repository.Db.FriendshipRepository;
+import Repository.Db.NotificationRepository;
 import Repository.Db.PersonRepository;
 import Service.AuthService;
 import Service.FriendshipService;
+import Service.NotificationService;
 import Service.PersonService;
 import UI.LoginController;
 import config.Config;
@@ -18,6 +20,7 @@ import java.util.Properties;
 public class MainFX extends Application {
     private PersonService sharedPersonService;
     private FriendshipService sharedFriendshipService;
+    private NotificationService sharedNotificationService;
     @Override
     public void start(Stage primaryStage) {
         initializeSharedServices();
@@ -34,8 +37,10 @@ public class MainFX extends Application {
             );
             PersonRepository personRepository = new PersonRepository(connection);
             FriendshipRepository friendshipRepository = new FriendshipRepository(connection, personRepository);
+            NotificationRepository notificationRepository = new NotificationRepository(connection,personRepository);
             sharedPersonService = new PersonService(personRepository);
-            sharedFriendshipService = new FriendshipService(friendshipRepository, sharedPersonService);
+            sharedNotificationService = new NotificationService(notificationRepository);
+            sharedFriendshipService = new FriendshipService(friendshipRepository, sharedPersonService,sharedNotificationService);
         } catch (SQLException e) {
             throw new RuntimeException("Database connection failed", e);
         }

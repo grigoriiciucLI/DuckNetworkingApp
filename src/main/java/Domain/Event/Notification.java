@@ -5,7 +5,7 @@ import Domain.User.User;
 
 import java.time.LocalDateTime;
 
-public class Notification extends Entity<Integer> {
+public class Notification extends Event {
     User receiver;
     String content;
     LocalDateTime generatedOn;
@@ -40,5 +40,9 @@ public class Notification extends Entity<Integer> {
 
     public LocalDateTime getSeenOn() {
         return seenOn;
+    }
+
+    public void setSeenOn(LocalDateTime seenOn) {
+        this.seenOn = seenOn;
     }
 }
