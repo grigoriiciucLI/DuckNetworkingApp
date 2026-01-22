@@ -43,6 +43,7 @@ public class UsersController implements IObserver<Notification> {
     private Stage stage;
     private final ObservableList<Person> usersList = FXCollections.observableArrayList();
     public void setServices(AuthService authService, Stage stage) {
+        //here you are on the java fx thread already
         this.authService = authService;
         this.stage = stage;
         this.personService = authService.getPersonService();
@@ -148,8 +149,8 @@ public class UsersController implements IObserver<Notification> {
     public void dispose() {
         notificationService.removeObserver(this);
     }
+
     private void loadNotifications() {
-        if (authService.getCurrentPerson() == null) return;
         List<Notification> notifications = notificationService.getNotificationsFor(authService.getCurrentPerson());
         Platform.runLater(() -> {
             notificationListView.setItems(FXCollections.observableArrayList(notifications));

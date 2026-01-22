@@ -4,7 +4,7 @@ import Domain.User.Person;
 
 import java.sql.*;
 
-public class PersonRepository extends DbRepository<Long, Person >{
+public class PersonRepository extends PaginatedDbRepository<Long, Person >{
     public PersonRepository(Connection conn) {
         super(conn);
     }

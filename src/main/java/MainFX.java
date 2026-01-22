@@ -6,6 +6,7 @@ import Service.FriendshipService;
 import Service.NotificationService;
 import Service.PersonService;
 import UI.LoginController;
+import UI.PaginatedUsersController;
 import config.Config;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Properties;
 public class MainFX extends Application {
     private PersonService sharedPersonService;
@@ -26,6 +28,19 @@ public class MainFX extends Application {
         initializeSharedServices();
         openLoginWindow();
         openLoginWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PaginatedUsersView.fxml"));
+            Parent root = loader.load();
+            PaginatedUsersController controller = loader.getController();
+            controller.setService(sharedPersonService);
+            Stage stage = new Stage();
+            stage.setTitle("Paginated Users");
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
     private void initializeSharedServices() {
         try {

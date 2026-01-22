@@ -9,18 +9,18 @@ public class Filter {
 
     public void addFilter(String column, Object value) {
         if (column != null && value != null)
-            filters.put(column, value);
+            filters.put(column+" = ?", value);
+    }
+    public void likeIgnoreCase(String column, String value) {
+        if (value != null && !value.isBlank())
+            filters.put("LOWER(" + column + ") LIKE ?", "%" + value.toLowerCase() + "%");
     }
 
     public String buildWhere() {
         if (filters.isEmpty()) {
             return "";
         }
-        List<String> conditions = new ArrayList<>();
-        for (String column : filters.keySet()) {
-            conditions.add(column + " = ? ");
-        }
-        return "WHERE " + String.join(" AND ", conditions);
+        return "WHERE " + String.join(" AND ", filters.keySet());
     }
 
     public void applyParameters(PreparedStatement stmt) throws SQLException {
