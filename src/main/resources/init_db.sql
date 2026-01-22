@@ -34,4 +34,4 @@ CREATE TABLE notifications (
                                CONSTRAINT fk_receiver FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-select * from friendships
+select * from notifications

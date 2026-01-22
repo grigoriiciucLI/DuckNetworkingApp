@@ -91,11 +91,7 @@ public class UsersController implements IObserver<Notification> {
     @FXML
     private void handleSearch() {
         String query = searchField.getText().trim();
-        usersList.setAll(
-                query.isEmpty()
-                        ? personService.getAll()
-                        : personService.searchByUsername(query)
-        );
+        usersList.setAll(personService.searchByUsername(query));
     }
     private void openProfile(Person person) {
         dispose();
