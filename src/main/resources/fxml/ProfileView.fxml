@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="UI.ProfileController">
+    <Label fx:id="nameLabel" text="Nume"/>
+    <Label fx:id="usernameLabel" text="Username"/>
+    <Label fx:id="friendsCountLabel" text="Numar prieteni"/>
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="addButton" text="Add" onAction="#handleAdd"/>
+        <Button fx:id="removeButton" text="Remove" onAction="#handleRemove"/>
+    </HBox>
+
+</VBox>
+

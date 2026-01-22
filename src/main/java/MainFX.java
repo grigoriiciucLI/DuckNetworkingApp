@@ -1,5 +1,7 @@
+import Repository.Db.FriendshipRepository;
 import Repository.Db.PersonRepository;
 import Service.AuthService;
+import Service.FriendshipService;
 import Service.PersonService;
 import UI.LoginController;
 import config.Config;
@@ -8,38 +10,47 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Properties;
-
 public class MainFX extends Application {
     private AuthService authService;
-    private PersonService personService;
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Properties props = Config.getProperties();
-        String url = props.getProperty("db.url");
-        String username = props.getProperty("db.username");
-        String password = props.getProperty("db.password");
-        Connection connection;
+    public void start(Stage primaryStage) {
+        AuthService authService = createAuthService();
         try {
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
+            Parent root = loader.load();
+            LoginController controller = loader.getController();
+            controller.setServices(authService, primaryStage);
+            primaryStage.setTitle("Login");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        PersonRepository personRepository = new PersonRepository(connection);
-        personService = new PersonService(personRepository);
-        authService = new AuthService(personService);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
-        Parent root = loader.load();
-        LoginController controller = loader.getController();
-        controller.setAuthService(authService,primaryStage);
-        primaryStage.setTitle("Login");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
+    private AuthService createAuthService() {
+        try {
+            Properties props = Config.getProperties();
+            Connection connection = DriverManager.getConnection(
+                    props.getProperty("db.url"),
+                    props.getProperty("db.username"),
+                    props.getProperty("db.password")
+            );
+            PersonRepository personRepository = new PersonRepository(connection);
+            FriendshipRepository friendshipRepository = new FriendshipRepository(connection,personRepository);
+            PersonService personService = new PersonService(personRepository);
+            FriendshipService friendshipService = new FriendshipService(friendshipRepository,personService);
+            return new AuthService(personService,friendshipService);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database connection failed", e);
+        }
+    }
+
 
     public static void main(String[] args) {
         launch(args);

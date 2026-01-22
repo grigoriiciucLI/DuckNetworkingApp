@@ -1,42 +1,44 @@
 package Service;
 
-import Domain.User.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import Domain.User.Person;
 
-//e ideal sa lucreze cu User, nu cu Person
-//nu trebuie sa stie detalii personale
 public class AuthService {
     private final PersonService personService;
-    private User currentUser;
+    private final FriendshipService friendshipService;
+    private Person currentPerson;
 
-    public AuthService(PersonService personService) {
+    public AuthService(PersonService personService, FriendshipService friendshipService) {
         this.personService = personService;
+        this.friendshipService = friendshipService;
     }
 
-    public User login(String username, String rawPassword) {
-        User user = personService.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Person login(String username, String rawPassword) {
+        Person user = personService.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
         if (!org.mindrot.jbcrypt.BCrypt.checkpw(rawPassword, user.getPasswd())) {
             throw new RuntimeException("Wrong password");
         }
-        currentUser = user;
+        currentPerson = user;
         return user;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public Person getCurrentPerson() {
+        return currentPerson;
     }
 
     public void logout() {
-        currentUser = null;
+        currentPerson = null;
     }
 
     public boolean isAuthenticated() {
-        return currentUser != null;
+        return currentPerson != null;
     }
 
     public PersonService getPersonService() {
         return personService;
+    }
+
+    public FriendshipService getFriendshipService() {
+        return friendshipService;
     }
 }

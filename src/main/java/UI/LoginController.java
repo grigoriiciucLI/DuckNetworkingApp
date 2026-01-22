@@ -1,5 +1,4 @@
 package UI;
-
 import Service.AuthService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,45 +9,39 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
-
 public class LoginController {
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Label errorLabel;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label errorLabel;
     private AuthService authService;
     private Stage stage;
-    public void setAuthService(AuthService authService, Stage stage) {
+
+    public void setServices(AuthService authService, Stage stage) {
         this.authService = authService;
         this.stage = stage;
     }
+
     @FXML
     private void handleLogin() {
         try {
-            authService.login(
-                    usernameField.getText(),
-                    passwordField.getText()
-            );
+            authService.login(usernameField.getText(), passwordField.getText());
             openUsersView();
         } catch (RuntimeException e) {
             errorLabel.setText(e.getMessage());
         }
     }
-
     private void openUsersView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UsersView.fxml"));
-            loader.setControllerFactory(c -> new UsersController(authService.getPersonService()));
             Parent root = loader.load();
-            Scene usersScene = new Scene(root);
-            stage.setScene(usersScene);
+            UsersController controller = loader.getController();
+            controller.setServices(authService, stage);
+            stage.setScene(new Scene(root));
             stage.setTitle("Users");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
 }
+
 
